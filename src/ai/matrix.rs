@@ -212,4 +212,11 @@ mod tests {
         assert!(res.rows == 2);
         assert!(res.cols == 2);
     }
+
+    #[test]
+    fn test_matrix_from_pass() {
+        let inputs = vec![0.1];
+        let b = Matrix::from(vec![inputs]);
+        println!("{:?}", b);
+    }
 }

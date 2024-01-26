@@ -129,3 +129,21 @@ impl Network<'_> {
         self.biases = biases;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    // this brings everything from parent's scope into this scope
+    use super::*;
+    use std::fs;
+
+    #[test]
+    fn test_all_pass() {
+        let inputs = vec![vec![0.0, 0.0], vec![1.0, 1.0]];
+        let targets = vec![vec![0.0], vec![1.0]];
+        let mut network = Network::new(vec![2, 3, 1], 0.5, SIGMOID);
+        network.train(inputs, targets, 100);
+        network.save("test.json".to_string());
+        network.load("test.json".to_string());
+        fs::remove_file("test.json").expect("should delete file");
+    }
+}

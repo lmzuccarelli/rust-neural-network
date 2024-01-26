@@ -33,7 +33,41 @@ pub const RELU: Activation = Activation {
 mod tests {
     // this brings everything from parent's scope into this scope
     use super::*;
+    use crate::ai::network::*;
 
     #[test]
-    fn activation_pass() {}
+    fn activation_sigmoid_pass() {
+        let inputs = vec![1.0, 1.0];
+        let targets = vec![1.0];
+        let mut net = Network::new(vec![2, 2, 1], 0.5, SIGMOID);
+        let res = net.forward_propagation(inputs);
+        net.back_propagation(res, targets);
+    }
+
+    #[test]
+    fn activation_identity_pass() {
+        let inputs = vec![1.0, 1.0];
+        let targets = vec![1.0];
+        let mut net = Network::new(vec![2, 2, 1], 0.5, IDENTITY);
+        let res = net.forward_propagation(inputs);
+        net.back_propagation(res, targets);
+    }
+
+    #[test]
+    fn activation_tanh_pass() {
+        let inputs = vec![1.0, 1.0];
+        let targets = vec![1.0];
+        let mut net = Network::new(vec![2, 2, 1], 0.5, TANH);
+        let res = net.forward_propagation(inputs);
+        net.back_propagation(res, targets);
+    }
+
+    #[test]
+    fn activation_relu_pass() {
+        let inputs = vec![1.0, 1.0];
+        let targets = vec![1.0];
+        let mut net = Network::new(vec![2, 2, 1], 0.5, RELU);
+        let res = net.forward_propagation(inputs);
+        net.back_propagation(res, targets);
+    }
 }

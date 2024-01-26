@@ -10,8 +10,13 @@ Thanks to the work done by [mathletedev](https://www.youtube.com/@mathletedev)
 
 Clone this repo
 
-# execute 
+### execute 
+
+```
 cargo run  
+
+
+```
 
 ## Testing
 
