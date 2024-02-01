@@ -29,9 +29,9 @@ impl Matrix {
         res
     }
 
-    pub fn multiply(&mut self, target: &Matrix) -> Matrix {
+    pub fn dot_product(&mut self, target: &Matrix) -> Matrix {
         if self.cols != target.rows {
-            panic!("Can't multiply a matrix of incorrect dimension")
+            panic!("Can't dot_product a matrix of incorrect dimension")
         }
 
         let mut res = Matrix::zero(self.rows, target.cols);
@@ -61,9 +61,9 @@ impl Matrix {
         res
     }
 
-    pub fn dot_multiply(&mut self, target: &Matrix) -> Matrix {
+    pub fn multiply(&mut self, target: &Matrix) -> Matrix {
         if self.rows != target.rows || self.cols != target.cols {
-            panic!("Can't dot_multiply a matrix of incorrect dimension")
+            panic!("Can't multiply a matrix of incorrect dimension")
         }
 
         let mut res = Matrix::zero(self.rows, self.cols);
@@ -162,10 +162,10 @@ mod tests {
     }
 
     #[test]
-    fn test_matrix_multiply_pass() {
+    fn test_matrix_dot_product_pass() {
         let mut a = Matrix::random(2, 2);
         let b = Matrix::random(2, 2);
-        let res = a.multiply(&b);
+        let res = a.dot_product(&b);
         assert!(res.rows == 2);
         assert!(res.cols == 2);
         assert!(res.data[0][0] != 0.0);
@@ -184,10 +184,10 @@ mod tests {
     }
 
     #[test]
-    fn test_matrix_dot_multiply_pass() {
+    fn test_matrix_multiply_pass() {
         let mut a = Matrix::random(2, 2);
         let b = Matrix::random(2, 2);
-        let res = a.dot_multiply(&b);
+        let res = a.multiply(&b);
         assert!(res.rows == 2);
         assert!(res.cols == 2);
         assert!(res.data[0][0] != 0.0);

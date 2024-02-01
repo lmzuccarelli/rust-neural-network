@@ -54,7 +54,7 @@ impl Network<'_> {
 
         for i in 0..self.layers.len() - 1 {
             current = self.weights[i]
-                .multiply(&current)
+                .dot_product(&current)
                 .add(&self.biases[i])
                 .map(self.activation.function);
             self.data.push(current.clone());
@@ -73,28 +73,34 @@ impl Network<'_> {
         let mut gradients = parsed.map(self.activation.derivative);
 
         for i in (0..self.layers.len() - 1).rev() {
-            gradients = gradients
-                .dot_multiply(&errors)
-                .map(&|x| x * self.learning_rate);
+            gradients = gradients.multiply(&errors).map(&|x| x * self.learning_rate);
 
-            self.weights[i] = self.weights[i].add(&gradients.multiply(&self.data[i].transpose()));
+            self.weights[i] =
+                self.weights[i].add(&gradients.dot_product(&self.data[i].transpose()));
             self.biases[i] = self.biases[i].add(&gradients);
 
-            errors = self.weights[i].transpose().multiply(&errors);
+            errors = self.weights[i].transpose().dot_product(&errors);
             gradients = self.data[i].map(self.activation.derivative);
         }
     }
 
     pub fn train(&mut self, inputs: Vec<Vec<f64>>, targets: Vec<Vec<f64>>, epochs: u16) {
+        let progress = epochs / 80;
         for i in 1..=epochs {
-            if epochs < 100 || i % (epochs / 100) == 0 {
-                println!("Epoch {} of {}", i, epochs);
+            if i == 1 {
+                print!("Progress [*")
+            } else {
+                if i % (epochs / progress) == 0 {
+                    print!("*");
+                }
             }
+
             for j in 0..inputs.len() {
                 let outputs = self.forward_propagation(inputs[j].clone());
                 self.back_propagation(outputs, targets[j].clone());
             }
         }
+        println!("]")
     }
 
     pub fn save(&self, file: String) {
